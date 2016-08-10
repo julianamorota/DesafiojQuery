@@ -1,0 +1,88 @@
+-----------------------------------JQUERY-----------------------------------
+*FUNÇÃO
+$(document).ready(function() {
+    $('div').click(function() {
+        $('div').fadeOut('slow');
+    });
+});
+
+*VARIAVEL
+var $p = $('p');
+
+*MULTIPLOS ITENS SELECIONADOS
+$('p, li').fadeTo('slow', 0);
+
+*THIS
+$(document).ready(function() {
+    $('div').click(function() {
+        $(this).fadeOut('slow');
+    });
+});
+
+*CRIANDO ELEMENTOS HTML
+$p = $("<p>I'm a new paragraph!</p>");
+
+*INSERINDO ELEMENTOS HTML
+.append() inserts the specified element as the last child of the target element.
+.prepend() inserts the specified element as the first child of the target 
+element.
+$(".info").append("<p>Stuff!</p>");
+$(".info").prepend("<p>Stuff!</p>");
+OU
+$('<p>Stuff!</p>').appendTo('.info');
+
+*INSERIR ANTES OU DEPOIS
+$('target').after('<tag>To add</tag>');
+
+*REMOVENDO
+.empty() deletes an element's content and all its descendants. For instance, if
+you .empty() an 'ol', you'll also remove all its 'li's and their text.
+.remove(), not only deletes an element's content, but deletes the element 
+itself.
+$('element to remove').remove();
+
+*CLASSES
+$('selector').addClass('className');
+$('selector').removeClass('className');
+
+*TOGGLE CLASS
+If the element it's called on has the class it receives as an input, 
+.toggleClass() removes that class; if the target element doesn't have that 
+class, .toggleClass() adds it.
+
+*MODIFICANDO CONTEÚDO
+.html() can be used to set the contents of the first element match it finds. 
+$('div').html("I love jQuery!");
+
+.val() is used to get the value of form elements. For example,
+$('input:checkbox:checked').val();
+
+*OUTROS
+//Get the value from an input
+var input = $('input[name=checkListItem]').val();
+
+$(document).ready(function() {
+    $('thingToTouch').event(function() {
+        $('thingToAffect').effect();
+    });
+});
+
+*ON
+.on(): general handler that takes the event, its selector, and an action as
+inputs. 
+$(document).on('event', 'selector', function() {
+    Do something!
+});
+
+*DOUBLE CLICK
+.dblclick()
+
+*HOVER
+$('div').hover(
+    function(){
+      $(this).addClass('highlight');
+   },
+   function(){
+      $(this).removeClass('highlight');
+   }
+);
