@@ -5,6 +5,9 @@ $(document).ready(function()
 {
   //local = [];
   //localStorage.setItem('local', JSON.stringify(local));
+ 
+
+    
 
   function limparLista()
   {
@@ -15,12 +18,10 @@ $(document).ready(function()
   //Salvar cidade e estado
   $('#btnSalvar').click(function()
   {
-    try
-    {
       var cidade = $('input[id=cidade]').val();
       var estado = $('input[id=estado]').val();
       //validações
-      if (cidade.length > 0 && estado.length > 0)
+      if (cidade && estado)
       {
         //salva no array e localStorage
         local[local.length] = {cidade: cidade, estado: estado};
@@ -33,11 +34,7 @@ $(document).ready(function()
       }
       else
         alert("Preencha os campos corretamente.");
-    }
-    catch(e)
-    {
-      alert(e);
-    }
+   
   });
 
   //Editar cidade/estado
@@ -89,7 +86,14 @@ $(document).ready(function()
 
     }
   });
-
+  //PAGINAÇÃO
+  var retrievedObject = localStorage.getItem('parametroLocal');
+  var parametro = ('retrievedObject: ', JSON.parse(retrievedObject));
+  var pagAtual = 1;
+  if (parametro)
+    itensPorPagina = parametro;
+  else
+	itensPorPagina = 3; //padrão
   //Listar cidades e estados
   $('#btnListar').click(function()
   {
@@ -100,50 +104,62 @@ $(document).ready(function()
   {
     try
     {
-      limparLista();
-      $('#apresentacao').css('visibility', 'visible');
-
+      
       var retrievedObject = localStorage.getItem('local');
       local = ('retrievedObject: ', JSON.parse(retrievedObject));
+	  if(local)
+	  {
+		  limparLista();
+		  $('#apresentacao').css('visibility', 'visible');
 
-      for (var i = (page-1) * itensPorPagina; i < (page * itensPorPagina) && i < local.length; i++)
-      {
-        var lista = $('#lista');
-        var desc = local[i].cidade + " - " + local[i].estado;
-        var input = lista.find('input');
-        var status = $('#page');
+		  for (var i = (page-1) * itensPorPagina; i < (page * itensPorPagina) && i < local.length; i++)
+		  {
+			var lista = $('#lista');
+			var desc = local[i].cidade + " - " + local[i].estado;
+			var input = lista.find('input');
+			var status = $('#page');
 
-        $('<input />', {type: 'checkbox', id: i, name: 'item'}).appendTo(lista);
-        $('<label />', {text: desc}).appendTo(lista);
-        $('<br>').appendTo(lista);
+			$('<input />', {type: 'checkbox', id: i, name: 'item'}).appendTo(lista);
+			$('<label />', {text: desc}).appendTo(lista);
+			$('<br>').appendTo(lista);
 
-        status.html(page + "/" + contarPaginas());
+			status.html(page + "/" + contarPaginas());
 
-        if(page == 1)
-          $('#pagAnt').css('visibility', 'hidden');
-        else
-          $('#pagAnt').css('visibility', 'visible');
+			if(page == 1)
+			  $('#pagAnt').css('visibility', 'hidden');
+			else
+			  $('#pagAnt').css('visibility', 'visible');
 
-        if(page == contarPaginas())
-          $('#pagProx').css('visibility', 'hidden');
-        else
-          $('#pagProx').css('visibility', 'visible');
+			if(page == contarPaginas())
+			  $('#pagProx').css('visibility', 'hidden');
+			else
+			  $('#pagProx').css('visibility', 'visible');
 
-        var lista = $("[name='item']");
-        var x = lista.length; var y = local.length;
-        var pri = parseInt(lista[0].id); var ult = pri + parseInt(itensPorPagina);
+			var lista = $("[name='item']");
+			var x = lista.length; var y = local.length;
+			var pri = parseInt(lista[0].id); var ult = pri + parseInt(itensPorPagina);
 
-        if(ult > y) ult = y;
+			if(ult > y) ult = y;
 
-        var expressao = "exibindo " + (pri + 1) + "-" + ult + " (" + x + ") itens de " + y;
-        $('#total').html(expressao);
-      }
+			var expressao = "exibindo " + (pri + 1) + "-" + ult + " (" + x + ") itens de " + y;
+			$('#total').html(expressao);
+		  }
+	  }
+	  else
+		alert("Nenhum local cadastrado");
+      
     }
     catch (e)
     {
       alert(e);
     }
 
+  }
+  function contarPaginas()
+  {
+    var retrievedObject = localStorage.getItem('local');
+    local = ('retrievedObject: ', JSON.parse(retrievedObject));
+    return Math.ceil(local.length / itensPorPagina);
   }
 
   $('#pagAnt').click(function()
@@ -189,27 +205,15 @@ $(document).ready(function()
     {
       alert(e);
     }
-
   });
+  
 
 });
 
 //---------------------------------------------------------------
 //PAGINAÇÃO
-var retrievedObject = localStorage.getItem('parametroLocal');
-var parametro = ('retrievedObject: ', JSON.parse(retrievedObject));
-var pagAtual = 1;
 
-if (parametro)
-  itensPorPagina = parametro;
-else
-  itensPorPagina = 3; //padrão
 
-function contarPaginas()
-{
-  var retrievedObject = localStorage.getItem('local');
-  local = ('retrievedObject: ', JSON.parse(retrievedObject));
-  return Math.ceil(local.length / itensPorPagina);
-}
+
 
 //
